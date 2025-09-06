@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/script.js' %}" defer></script>
+</head>
+<body>
+    <div class="content">
+        <img src="{% static 'img/fondo1.jpg' %}" class="fondos" alt="">
+        <img src="{% static 'img/fondo2.jpg' %}" class="fondos" alt="">
+        <img src="{% static 'img/fondo3.jpg' %}" class="fondos" alt="">
+        <div class="auth-container">
+            <h1 class="auth-title">Crear usuario</h1>
+            <p class="auth-subtitle">Ingresar datos</p>
+            <form action="" method="POST">
+                <label for="">Nombre</label>
+                {% csrf_token %}
+                {{nombre}}
+                <label for="">Apellido</label>
+                {% csrf_token %}
+                {{apellido}}
+                <label for="">Correo</label>
+                {% csrf_token %}
+                {{correo}} 
+                <label for="">Numero de documento</label>
+                {% csrf_token %}
+                {{documento}}
+                <label for="">Contraseña</label>
+                {% csrf_token %}
+                {{contraseña}}
+                <label for="">Confirmacion de contraseña</label>
+                {% csrf_token %}
+                {{confirmacion_contraseña}}
+                <a href="">Ya esta registrado?</a>
+                <p class="error" id="error">{{error}}</p>
+                <button class="btn btn-primary" id="btn" type="submit">Crear usuario</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

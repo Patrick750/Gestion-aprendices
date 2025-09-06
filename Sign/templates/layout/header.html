@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <script src="{% static 'js/home.js' %}" defer></script>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">GA</div>
+                <div class="logo-text">
+                    <h1>Gestor de Aprendices</h1>
+                    <p>Sistema de Control de Acceso</p>
+                </div>
+            </div>
+            <div class="user-info">
+                <span class="user-name">ADMINISTRADOR (NOMBRE)</span>
+                <button class="logout-btn" onclick="showLogoutModal()">Cerrar</button>
+                
+                <div class="modal-overlay" id="logoutModal" onclick="closeModal(event)">
+                    <div class="logout-modal">
+                        <div class="modal-header">
+                            <div class="modal-icon">🚪</div>
+                                <h2 class="modal-title">Cerrar Sesión</h2>
+                                <p class="modal-subtitle">¿Estás seguro de que deseas salir?</p>
+                            </div>
+                            <div class="modal-body">
+                            <p class="modal-message">
+                                Se cerrará tu sesión actual y tendrás que iniciar sesión nuevamente para acceder a tu cuenta.
+                            </p>
+                            <div class="modal-actions">
+                                <button class="modal-btn btn-cancel" onclick="cancelLogout()">
+                                    Cancelar
+                                </button>
+                                <button class="modal-btn btn-confirm" onclick="logoutUser()">
+                                    Cerrar Sesión
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

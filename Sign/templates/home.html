@@ -1,0 +1,121 @@
+{% extends 'layout/header.html' %}
+{% load static %}
+<!DOCTYPE html>
+{% block content %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Gestor de Aprendices - Home</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <script src="{% static 'js/home.js' %}" defer></script>
+</head>
+<body>
+<!-- Main Content -->
+    <div class="container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h2>Bienvenido al Sistema Gestor de Aprendices</h2>
+            <p>Controla y gestiona el acceso de los aprendices de forma eficiente. Registra entradas, salidas y mantén un seguimiento completo de la asistencia.</p>
+        </div>
+
+        <!-- Dashboard Cards -->
+        <div class="dashboard-grid">
+            <!-- Registro de Ingreso -->
+            <div class="dashboard-card" onclick="navigateTo('ingreso')">
+                <div class="card-icon">📥</div>
+                <h3>Registro de Ingreso</h3>
+                <p>Registra la entrada de aprendices al centro de formación. Controla horarios de llegada y valida identidades.</p>
+                <div class="card-actions">
+                    <a href="#" class="action-btn">Nuevo Ingreso</a>
+                    <a href="#" class="action-btn">Ver Registros</a>
+                </div>
+            </div>
+
+            <!-- Registro de Salida -->
+            <div class="dashboard-card" onclick="navigateTo('salida')">
+                <div class="card-icon">📤</div>
+                <h3>Registro de Salida</h3>
+                <p>Registra la salida de aprendices del centro. Controla horarios de salida y genera reportes de permanencia.</p>
+                <div class="card-actions">
+                    <a href="#" class="action-btn">Nueva Salida</a>
+                    <a href="#" class="action-btn">Ver Salidas</a>
+                </div>
+            </div>
+
+            <!-- Gestión de Aprendices -->
+            <div class="dashboard-card">
+                <div class="card-icon">👥</div>
+                <h3>Gestión de Aprendices</h3>
+                <p>Administra la información de los aprendices, programas de formación, horarios y datos de contacto.</p>
+                <div class="card-actions">
+                    <a href="#" class="action-btn">Nuevo Aprendiz</a>
+                    <a href="/list_aprendises" class="action-btn">Lista Completa</a>
+                </div>
+            </div>
+
+            <!-- Reportes y Estadísticas -->
+            <div class="dashboard-card" onclick="navigateTo('reportes')">
+                <div class="card-icon">📊</div>
+                <h3>Reportes y Estadísticas</h3>
+                <p>Genera reportes de asistencia, estadísticas de permanencia y análisis de comportamiento de acceso.</p>
+                <div class="card-actions">
+                    <a href="#" class="action-btn">Reportes Diarios</a>
+                    <a href="#" class="action-btn">Estadísticas</a>
+                </div>
+            </div>
+
+            <!-- Control de Acceso -->
+            <div class="dashboard-card" onclick="navigateTo('acceso')">
+                <div class="card-icon">🔐</div>
+                <h3>Control de Acceso</h3>
+                <p>Gestiona permisos, horarios permitidos, restricciones especiales y configuración de seguridad.</p>
+                <div class="card-actions">
+                    <a href="#" class="action-btn">Configurar</a>
+                    <a href="#" class="action-btn">Permisos</a>
+                </div>
+            </div>
+
+            <!-- Notificaciones -->
+            <div class="dashboard-card" onclick="navigateTo('notificaciones')">
+                <div class="card-icon">🔔</div>
+                <h3>Notificaciones</h3>
+                <p>Centro de alertas, notificaciones automáticas y comunicaciones importantes del sistema.</p>
+                <div class="card-actions">
+                    <a href="#" class="action-btn">Ver Alertas</a>
+                    <a href="#" class="action-btn">Configurar</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="stats-section">
+            <h3>Estadísticas de Hoy</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">47</span>
+                    <div class="stat-label">Aprendices Presentes</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">52</span>
+                    <div class="stat-label">Ingresos Registrados</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">35</span>
+                    <div class="stat-label">Salidas Registradas</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">3</span>
+                    <div class="stat-label">Alertas Pendientes</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 Sistema Gestor de Aprendices - Todos los derechos reservados</p>
+    </div>
+</body>
+</html>
+{% endblock %}

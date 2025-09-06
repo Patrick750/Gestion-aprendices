@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/script.js' %}" defer></script>
+</head>
+<body>
+    <div class="auth-container">
+        <h1 class="auth-title">Crear Cuenta</h1>
+        <p class="auth-subtitle">Ingresa tus datos</p>
+        <form action="" method="POST">
+            <label for="">Nombre</label>
+            {% csrf_token %}
+            {{nombre}}
+            <label for="">Apellido</label>
+            {% csrf_token %}
+            {{apellido}}
+            <label for="">Correo</label>
+            {% csrf_token %}
+            {{correo}}
+            <label for="">Telefono</label>
+            {% csrf_token %}
+            {{telefono}}
+            <label for="">Tipo de documento</label>
+            {% csrf_token %}
+            {{tipo_documento}}  
+            <label for="">Numero de documento</label>
+            {% csrf_token %}
+            {{documento}}
+            <p class="error" id="error">{{error}}</p>
+            <button class="btn btn-primary" id="btn" type="submit">Crear usuario</button>
+        </form>
+    </div>
+</body>
+</html>

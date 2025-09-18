@@ -1,9 +1,9 @@
 // Variables para simular datos dinámicos
 let stats = {
-    presentes: 47,
-    ingresos: 52,
-    salidas: 35,
-    alertas: 3
+    presentes: 0,
+    ingresos: 0,
+    salidas: 0,
+    alertas: 0
 };
 
 // Funciones de navegación
@@ -85,15 +85,15 @@ function updateTime() {
 
 setInterval(updateTime, 1000);
 
-function showLogoutModal() {
+function showLogoutModal(){
     document.getElementById('logoutModal').classList.add('active');
 }
 
-function closeModal(event) {
+function closeModal(event){
     if (event.target === event.currentTarget) {
         document.getElementById('logoutModal').classList.remove('active');
     }
 }
-function cancelLogout() {
+function cancelLogout(){
     document.getElementById('logoutModal').classList.remove('active');
 }

@@ -7,60 +7,47 @@ from django.db import transaction
 
 @transaction.atomic
 @csrf_protect
-def sign(request):
+def admin_sign(request):
     form = user()
+    formulario = {
+        'nombre':form['nombre'],
+        'apellido':form['apellido'],
+        'correo':form['correo'],
+        'documento':form['documento'],
+        'contraseña':form['contraseña'],
+        'confirmacion_contraseña':form['confirmacion_contraseña']
+    }
     if request.method == 'GET':
-        return render(request, 'sign.html',{
-            'nombre':form['nombre'],
-            'apellido':form['apellido'],
-            'correo':form['correo'],
-            'documento':form['documento'],
-            'contraseña':form['contraseña'],
-            'confirmacion_contraseña':form['confirmacion_contraseña']
-        })
+        return render(request, 'sign.html',formulario)
     else:
-        datos = user(request.POST) 
-        if datos.is_valid():
+        valores = user(request.POST) 
+        if valores.is_valid():
             print("✅Formulario valido")
             try:
-                documento =  datos.cleaned_data["documento"].strip()
-                contraseña =  datos.cleaned_data["contraseña"].strip()
-                confirmacion_contraseña =  datos.cleaned_data["confirmacion_contraseña"].strip()
+                documento =  valores.cleaned_data["documento"].strip()
+                contraseña =  valores.cleaned_data["contraseña"].strip()
+                confirmacion_contraseña =  valores.cleaned_data["confirmacion_contraseña"].strip()
 
                 if contraseña == confirmacion_contraseña:
                     with transaction.atomic():
                         if Usuario.objects(numero_documento=documento).first() is not None:
-                            return render(request, 'sign.html',{
-                                'nombre':form['nombre'],
-                                'apellido':form['apellido'],
-                                'correo':form['correo'],
-                                'documento':form['documento'],
-                                'contraseña':form['contraseña'],
-                                'confirmacion_contraseña':form['confirmacion_contraseña'],
-                                'error': 'El aprendiz ya se encuentra registrado'
-                            })
+                            formulario['error'] = 'El aprendiz ya se encuentra registrado' 
+                            return render(request, 'sign.html', formulario)
                         
                         estudiante = Usuario()
                         estudiante.numero_documento = documento
-                        estudiante.nombres = datos.cleaned_data["nombre"].strip()
-                        estudiante.apellidos = datos.cleaned_data["apellido"].strip()
-                        estudiante.email = datos.cleaned_data["correo"].lower().strip()
+                        estudiante.nombres = valores.cleaned_data["nombre"].strip()
+                        estudiante.apellidos = valores.cleaned_data["apellido"].strip()
+                        estudiante.email = valores.cleaned_data["correo"].lower().strip()
                         estudiante.codigo_estudiante = documento.strip()
-                        estudiante.formacion = 'Analisis y desarrollo desoftware'
+                        estudiante.rol = 'ADMINISTRADOR'
                         estudiante.set_password(contraseña)
                         estudiante.save()
                         print("✅Estudiante registrado:", estudiante.nombres) 
                         return redirect('home')
                 else:
-                    return render(request, 'sign.html',{
-                        'nombre':form['nombre'],
-                        'apellido':form['apellido'],
-                        'correo':form['correo'],
-                        'documento':form['documento'],
-                        'contraseña':form['contraseña'],
-                        'confirmacion_contraseña':form['confirmacion_contraseña'],
-                        'error': 'Las contraseñas deben coincidir'
-                    })
+                    formulario['error'] = 'Las contraseñas deben coincidir'  
+                    return render(request, 'sign.html',formulario)
                 authenticated_user = authenticate(
                     request,
                     documento=documento,
@@ -70,10 +57,6 @@ def sign(request):
                 if authenticated_user:
                     print(f"🔑 Autenticación exitosa para: {documento}")
                     login(request, authenticated_user)
-                    messages.success(
-                        request, 
-                        f'¡Bienvenido {user.nombres}! Tu cuenta ha sido creada exitosamente.'
-                    )
                     print(f"🚀 Redirigiendo al dashboard...")
                     return redirect('/index')
                 else:
@@ -81,15 +64,8 @@ def sign(request):
                     return redirect('/log_in')
             except Exception as e:
                 print(e)
-                return render(request, 'sign.html',{
-                    'nombre':form['nombre'],
-                    'apellido':form['apellido'],
-                    'correo':form['correo'],
-                    'documento':form['documento'],
-                    'contraseña':form['contraseña'],
-                    'confirmacion_contraseña':form['confirmacion_contraseña'],
-                    'error': 'Error al registrar el estudiante'
-                })
+                formulario['error'] = 'Error al registrar el estudiante'
+                return render(request, 'sign.html',formulario)
 
 
 def login(request):
@@ -98,18 +74,65 @@ def login(request):
 def home(request):
     return render(request, 'home.html')
 
+@transaction.atomic
 def gention_aprendices(request):
-    if request.method == "GET":
-        apprentices = aprendices()
-        informacion = Usuario.objects.filter(rol="APRENDIZ")
-        if len(informacion) == 0:
-            return render(request, "lista_aprendices.html",{
-                'cantidad': 0,
-                'vacio':'No hay aprendices registrados',
-                'aprendices':aprendices['nombres']
-            })
+    informacion = Usuario.objects.filter(rol="APRENDIZ")
+    usuarios = aprendices()
+    contexto = {
+                'nombres':usuarios['nombres'],
+                'apellidos':usuarios['apellidos'],
+                'documento':usuarios['documento'],
+                'tipo_documento':usuarios['tipo_documento'],
+                'formaciones':usuarios['formacion'],
+                'ficha':usuarios['ficha'],
+                'telefono':usuarios['telefono'],
+                'email':usuarios['email'],
+                'datos':informacion
+    }
+    if request.method == 'POST':
+        datos = aprendices(request.POST)
+        if datos.is_valid():
+            print('✅Formulario validado')
+            try:
+                documento = datos.cleaned_data["documento"].strip()
+                if Usuario.objects(numero_documento=documento).first() is not None:
+                    contexto['error'] = 'El aprendiz ya existe'
+                    return render(request, 'lista_aprendices.html',contexto)
+                registro = Usuario()
+                registro.numero_documento = documento
+                registro.tipo_documento = datos.cleaned_data["tipo_documento"]
+                registro.nombres = datos.cleaned_data["nombres"].strip()
+                registro.apellidos = datos.cleaned_data["apellidos"].strip()
+                registro.email = datos.cleaned_data["email"].lower().strip()
+                registro.telefono = datos.cleaned_data["telefono"].strip()
+                registro.codigo_estudiante = documento
+                registro.formacion = datos.cleaned_data["formacion"]
+                registro.ficha = datos.cleaned_data["ficha"].strip()
+                registro.save()
+                print('✅Aprendiz registrado')
+                return render(request,"lista_aprendices.html",contexto)
+            except Exception as e:
+                    print(f'❌ Error al guardar aprendiz: {e}')
         else:
-            return render(request, "lista_aprendices.html",{
-                'datos':informacion,
-                'nombres':apprentices['nombres']
-            })
+            print('❌Formulario no valido')
+            contexto['datos'] = informacion
+            return render(request, "lista_aprendices.html",contexto)
+    else:
+        if len(informacion) == 0:
+            contexto['cantidad'] = 0
+            contexto['datos'] = informacion
+            contexto['vacio'] = 'No hay aprendices registrados'
+            return render(request, "lista_aprendices.html", contexto)
+        else:
+            return render(request, "lista_aprendices.html",contexto)
+
+def eliminar(request, documento):
+    if request.method != 'POST':
+        return redirect('eliminar_aprendiz')
+    try:
+        aprendiz = Usuario.objects(numero_documento = documento)
+        if aprendiz:
+            aprendiz.delete()
+    except Exception as e:
+        print(e)
+    return redirect('list_aprendises')

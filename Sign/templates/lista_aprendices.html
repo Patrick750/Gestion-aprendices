@@ -55,11 +55,11 @@
                         </div>
                         <div class="detail-row">
                             <span class="detail-label">Ficha:</span>
-                            <span class="detail-value">${aprendiz.ficha}</span>
+                            <span class="detail-value">{{dato.ficha}}</span>
                         </div>
                         <div class="detail-row">
                             <span class="detail-label">Teléfono:</span>
-                            <span class="detail-value">${aprendiz.telefono}</span>
+                            <span class="detail-value">{{dato.telefono}}</span>
                         </div>
                         <div class="detail-row">
                             <span class="detail-label">Estado:</span>
@@ -67,20 +67,49 @@
                         </div>
                     </div>
                     <div class="aprendiz-actions">
-                        <button class="btn-action btn-edit" >✏️ Editar</button>
-                        <button class="btn-action btn-delete" >🗑️ Eliminar</button>
+                        <form action="">
+                            {% csrf_token %}
+                            <button class="btn-action btn-edit">✏️ Editar</button>
+                        </form>
+                        <button class="btn-action btn-delete btn-abrir-modal-delete"
+                                data-url="{% url 'eliminar_aprendiz' dato.numero_documento %}"
+                                data-nombre="{{dato.nombres}} {{dato.apellidos}}"
+                                onclick="OpenDelete(event)">
+                                🗑️ Eliminar
+                        </button>
                     </div>
                 </div>
-                {% endfor %}
-                {% else %}
+                {% endfor %} {% else %}
                 <div class="div-vacio">
                     <h2 class="vacio">{{vacio}}</h2>
                 </div>
                 {% endif %}
-        </div>
-    </div>
 
-    <!-- Modal para Agregar/Editar Aprendiz -->
+                <!--Modal para eliminar aprendiz-->
+                <div class="modal-overlay eliminar" id="eliminar" onclick="Close(event)">
+                    <div class="logout-modal">
+                        <div class="modal-header">
+                            <div class="modal-icon">🚪</div>
+                                <h2 class="modal-title">Eliminar aprendiz?</h2>
+                                <p class="modal-subtitle" id="texto"></p>
+                            </div>
+                            <div class="modal-body">
+                            <div class="modal-actions">
+                                <button class="modal-btn btn-cancel" onclick="cancel()">
+                                    Cancelar
+                                </button>
+                                <form action="" id="formulario" method="POST">
+                                    {% csrf_token %}
+                                    <button class="modal-btn btn-confirm">Eliminar</button>
+                                </form>
+                            </div>
+                        </div>  
+                    </div>
+                </div>  
+            </div>
+            </div>
+        
+        <!-- Modal para Agregar/Editar Aprendiz -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
             <div class="modal-header-new">
@@ -88,69 +117,54 @@
                 <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <form id="aprendizForm">
+                <form id="aprendizForm" method="POST">
+
                     <div class="form-grid">
                         <div class="form-group">
                             <label class="form-label">Nombres</label>
+                            {% csrf_token %}
                             {{nombres}}
                         </div>
                         <div class="form-group">
                             <label class="form-label">Apellidos</label>
-                            <input type="text" class="form-input" id="apellidos" required>
+                            {% csrf_token %}
+                            {{apellidos}}
                         </div>
                         <div class="form-group">
                             <label class="form-label">Documento</label>
-                            <input type="text" class="form-input" id="documento" required>
+                            {% csrf_token %}
+                            {{documento}}
                         </div>
                         <div class="form-group">
                             <label class="form-label">Tipo Documento</label>
-                            <select class="form-select" id="tipoDocumento" required>
-                                <option value="">Seleccionar</option>
-                                <option value="CC">Cédula de Ciudadanía</option>
-                                <option value="TI">Tarjeta de Identidad</option>
-                                <option value="CE">Cédula de Extranjería</option>
-                            </select>
+                            {% csrf_token %}
+                            {{tipo_documento}}
                         </div>
                         <div class="form-group">
                             <label class="form-label">Teléfono</label>
-                            <input type="tel" class="form-input" id="telefono">
+                            {% csrf_token %}
+                            {{telefono}}
                         </div>
                         <div class="form-group">
                             <label class="form-label">Email</label>
-                            <input type="email" class="form-input" id="email">
+                            {% csrf_token %}
+                            {{email}}
                         </div>
                         <div class="form-group full-width">
                             <label class="form-label">Programa de Formación</label>
-                            <select class="form-select" id="programa" required>
-                                <option value="">Seleccionar programa</option>
-                                <option value="ADSO">Análisis y Desarrollo de Software</option>
-                                <option value="GESTION_EMPRESARIAL">Gestión Empresarial</option>
-                                <option value="MERCADEO">Mercadeo y Publicidad</option>
-                                <option value="CONTABILIDAD">Contabilidad y Finanzas</option>
-                                <option value="SISTEMAS">Técnico en Sistemas</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Ficha</label>
-                            <input type="text" class="form-input" id="ficha" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Estado</label>
-                            <select class="form-select" id="estado" required>
-                                <option value="Activo">Activo</option>
-                                <option value="Inactivo">Inactivo</option>
-                            </select>
+                            {% csrf_token %}
+                            {{formaciones}}
                         </div>
                         <div class="form-group full-width">
-                            <label class="form-label">Dirección</label>
-                            <input type="text" class="form-input" id="direccion">
+                            <label class="form-label">Ficha</label>
+                            {% csrf_token %}
+                            {{ficha}}
                         </div>
+                        <p>{{error}}</p>
                     </div>
+                    <button type="button" class="btn-secondary" onclick="closeModal(event)">Cancelar</button>
+                    <button type="submit" class="btn-primary" >Guardar</button>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn-secondary" onclick="closeModal()">Cancelar</button>
-                <button type="submit" class="btn-primary" onclick="saveAprendiz()">Guardar</button>
             </div>
         </div>
     </div>

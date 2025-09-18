@@ -33,9 +33,9 @@
     padding: .5rem;
     border-radius: 8px;
     box-shadow: 0 2px 20px rgba(0,0,0,0.08);
-    margin-bottom: 2rem;
+    margin: 1rem auto;
     text-align: center;
-    width: 89vw;
+
 }
 
 .div-vacio .vacio {
@@ -43,7 +43,6 @@
     font-size: 2rem;
     text-align: center;
     width: max-content;
-    margin:auto;
 }
 
 .page-header p {

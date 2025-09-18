@@ -73,13 +73,6 @@ function editAprendiz(id) {
     document.getElementById('modalOverlay').classList.add('active');
 }
 
-// Eliminar aprendiz
-function deleteAprendiz(id) {
-    if (confirm('¿Está seguro de que desea eliminar este aprendiz?')) {
-        aprendices = aprendices.filter(a => a.id !== id);
-        renderAprendices();
-    }
-}
 
 // Buscar aprendices
 document.getElementById('searchInput').addEventListener('input', function(e) {
@@ -117,3 +110,32 @@ document.getElementById('modalOverlay').addEventListener('click', function(e) {
 
 // Inicializar
 renderAprendices();
+//Modal de eliminacion de aprendiz
+
+function Delete(){
+    document.querySelector('.eliminar').classList.add('active');
+}
+
+function cancel(){
+    document.querySelector('.eliminar').classList.remove('active');
+}
+
+function OpenDelete(event){
+    document.querySelector('.eliminar').classList.add('active')
+    const boton = event.currentTarget
+    const nombre = boton.getAttribute('data-nombre')
+    const url = boton.getAttribute('data-url')
+
+    document.getElementById('formulario').action = url
+    document.getElementById('texto').textContent = `Estas seguro de eliminar a "${nombre}"` 
+}
+function Close(event){
+    if (event.target === event.currentTarget) {
+        document.querySelector('.eliminar').classList.remove('active');
+    }
+}
+
+
+
+
+        

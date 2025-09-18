@@ -26,7 +26,8 @@ class Usuario(Document):
     
     # Información académica
     codigo_estudiante = fields.StringField(required=True, unique=True, max_length=20)
-    formacion = fields.StringField(required=True, max_length=100)
+    formacion = fields.StringField(max_length=100)
+    ficha = fields.StringField(requered=True, max_length=20)
     estado = fields.StringField(
         choices=['ACTIVO', 'INACTIVO', 'GRADUADO', 'RETIRADO'], 
         default='ACTIVO'

@@ -69,7 +69,20 @@
                     <div class="aprendiz-actions">
                         <form action="">
                             {% csrf_token %}
-                            <button class="btn-action btn-edit">✏️ Editar</button>
+                            <button class="btn-action btn-edit"
+                                data-nombre="{{dato.nombres}}"
+                                data-apellido="{{dato.apellidos}}"
+                                data-numero-id="{{dato.numero_documento}}"
+                                data-tipo-id="{{dato.tipo_documento}}"
+                                data-formacion="{{dato.formacion}}"
+                                data-email="{{dato.email}}"
+                                data-ficha="{{dato.ficha}}"
+                                data-telefono="{{dato.telefono}}"
+                                data-estado="{{dato.estado}}"
+                                data-ruta="{% url 'editar_aprendiz' dato.numero_documento %}"
+                                onclick="OpenEdicion(event)">
+                            ✏️ Editar
+                            </button>
                         </form>
                         <button class="btn-action btn-delete btn-abrir-modal-delete"
                                 data-url="{% url 'eliminar_aprendiz' dato.numero_documento %}"
@@ -117,7 +130,7 @@
                 <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <form id="aprendizForm" method="POST">
+                <form id="aprendizForm" method="POST" action="">
 
                     <div class="form-grid">
                         <div class="form-group">
@@ -160,10 +173,17 @@
                             {% csrf_token %}
                             {{ficha}}
                         </div>
+                        <div class="form-group full-width">
+                            <label class="form-label">Estado</label>
+                            {% csrf_token %}
+                            {{estado}}
+                        </div>
                         <p>{{error}}</p>
-                    </div>
-                    <button type="button" class="btn-secondary" onclick="closeModal(event)">Cancelar</button>
-                    <button type="submit" class="btn-primary" >Guardar</button>
+                        <div class="botones">
+
+                        </div>
+                        
+                    </div>                    
                 </form>
             </div>
         </div>

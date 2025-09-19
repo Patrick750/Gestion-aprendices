@@ -131,8 +131,21 @@ class aprendices(forms.Form):
         })
     )  
          
+    estados = [
+        ('ACTIVO','Activo'),
+        ('INACTIVO','Inactivo'),
+        ('GRADUADO', 'Graduado'),
+        ('RETIRADO', 'Retirado')
+    ]
 
-
+    estado = forms.ChoiceField(
+        choices=estados,
+        widget=forms.Select(attrs={
+            'class':'form-select', 
+            'id':'estado',
+            'required':'true'
+        })
+    )
 
 
     

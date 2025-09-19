@@ -87,6 +87,7 @@ def gention_aprendices(request):
                 'ficha':usuarios['ficha'],
                 'telefono':usuarios['telefono'],
                 'email':usuarios['email'],
+                'estado':usuarios['estado'],
                 'datos':informacion
     }
     if request.method == 'POST':
@@ -136,3 +137,28 @@ def eliminar(request, documento):
     except Exception as e:
         print(e)
     return redirect('list_aprendises')
+
+
+def editar_aprendiz(request, documento):
+    if request.method != 'POST':
+        return redirect('editar_aprendiz')
+    
+    form = aprendices(request.POST)
+    if form.is_valid():
+        print('✅ Formulario valido')
+        try:
+            aprendiz = Usuario.objects.get(numero_documento = documento)
+            aprendiz.tipo_documento = form.cleaned_data['tipo_documento']
+            aprendiz.nombres = form.cleaned_data['nombres']
+            aprendiz.apellidos = form.cleaned_data['apellidos']
+            aprendiz.email = form.cleaned_data['email']
+            aprendiz.telefono = form.cleaned_data['telefono']
+            aprendiz.formacion = form.cleaned_data['formacion']
+            aprendiz.ficha = form.cleaned_data['ficha']
+            aprendiz.estado = form.cleaned_data['estado']
+            aprendiz.save()
+            print(f'✅ edicion exitosa {aprendiz.nombres}')
+            return redirect('list_aprendises')
+        except Exception as e:
+            print(f'❌Error al editar {e}')
+    

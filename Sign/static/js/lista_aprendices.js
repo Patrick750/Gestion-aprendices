@@ -1,16 +1,30 @@
 
 
 // Abrir modal
+const guardar = document.createElement('button')
+const cancelar_save = document.createElement('button')
 function openModal() {
-    editingId = null;
     document.getElementById('modalTitle').textContent = 'Nuevo Aprendiz';
     document.getElementById('aprendizForm').reset();
     document.getElementById('modalOverlay').classList.add('active');
+
+    guardar.textContent = 'Guardar'
+    guardar.type = 'submit'
+    guardar.className = 'btn-primary'
+    document.getElementById('aprendizForm').appendChild(guardar)
+    
+    cancelar_save.textContent = 'Cancelar'
+    cancelar_save.className = 'btn-secondary'
+    cancelar_save.type = 'button'    
+    document.getElementById('aprendizForm').appendChild(cancelar_save)
+    cancelar_save.addEventListener('click', closeModal)
 }
 
 // Cerrar modal
 function closeModal() {
     document.getElementById('modalOverlay').classList.remove('active');
+    document.getElementById('aprendizForm').removeChild(cancelar_save)
+    document.getElementById('aprendizForm').removeChild(guardar)
     editingId = null;
 }
 
@@ -110,16 +124,17 @@ document.getElementById('modalOverlay').addEventListener('click', function(e) {
 
 // Inicializar
 renderAprendices();
+
+
+
 //Modal de eliminacion de aprendiz
 
 function Delete(){
     document.querySelector('.eliminar').classList.add('active');
 }
-
 function cancel(){
     document.querySelector('.eliminar').classList.remove('active');
 }
-
 function OpenDelete(event){
     document.querySelector('.eliminar').classList.add('active')
     const boton = event.currentTarget
@@ -133,6 +148,44 @@ function Close(event){
     if (event.target === event.currentTarget) {
         document.querySelector('.eliminar').classList.remove('active');
     }
+}
+//Edicion de aprendiz//
+function OpenEdicion(event){
+    event.preventDefault()
+    const boton = event.currentTarget   
+    document.getElementById('modalOverlay').classList.add('active');
+
+    const botones = document.querySelector('.botones')
+    const formulario = document.getElementById('aprendizForm')
+
+    formulario.action = boton.getAttribute('data-ruta') 
+    
+    const btn_cancelar = document.createElement('button')
+    btn_cancelar.textContent = 'Cancelar'
+    btn_cancelar.type = 'button'
+    btn_cancelar.className = 'btn-secondary'
+    
+    const btn_editar = document.createElement('button')
+    btn_editar.textContent = 'Editar'
+    btn_editar.type = 'submit'
+    btn_editar.className = 'btn-primary'
+    
+    botones.appendChild(btn_cancelar)
+    botones.appendChild(btn_editar)
+    btn_cancelar.addEventListener('click', function(){
+        botones.innerHTML = ''
+        formulario.action = ''
+        document.getElementById('modalOverlay').classList.remove('active');
+    })
+    
+    document.getElementById('nombres').value = boton.getAttribute('data-nombre')
+    document.getElementById('apellidos').value = boton.getAttribute('data-apellido')
+    document.getElementById('documento').value = boton.getAttribute('data-numero-id')
+    document.getElementById('tipoDocumento').value = boton.getAttribute('data-tipo-id')
+    document.getElementById('programa').value = boton.getAttribute('data-formacion')
+    document.getElementById('email').value = boton.getAttribute('data-email')
+    document.getElementById('ficha').value = boton.getAttribute('data-ficha')
+    document.getElementById('telefono').value = boton.getAttribute('data-telefono')
 }
 
 
